@@ -25,8 +25,8 @@ export const DarkTheme = createTheme({
     },
 
     background: {
-      default: "#100F14",
-      paper: "#080809",
+      default: "#080809",
+      paper: "#100F14",
     },
   },
 
@@ -69,8 +69,8 @@ export const LightTheme = createTheme({
     },
 
     background: {
-      default: "#F0F0F0",
-      paper: "#D2DAE2",
+      default: "#A9B0BB",
+      paper: "#F8F8F9",
     },
   },
 
