@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material";
 
 export const DarkTheme = createTheme({
   typography: {
-    fontFamily: "Lexend",
+    fontFamily: "Josefin Sans",
   },
 
   palette: {
@@ -41,12 +41,19 @@ export const DarkTheme = createTheme({
         },
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+        },
+      },
+    },
   },
 });
 
 export const LightTheme = createTheme({
   typography: {
-    fontFamily: "Lexend",
+    fontFamily: "Josefin Sans",
   },
 
   palette: {
@@ -82,6 +89,14 @@ export const LightTheme = createTheme({
         },
         body: {
           transition: "0.3s",
+        },
+      },
+    },
+
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
         },
       },
     },

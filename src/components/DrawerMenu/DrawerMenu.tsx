@@ -1,6 +1,9 @@
-import styled from "@emotion/styled";
-import { Menu } from "@mui/icons-material";
-import { Box, IconButton, Switch, Typography, useTheme } from "@mui/material";
+import {
+  DarkModeOutlined,
+  Menu,
+  NightsStayOutlined,
+} from "@mui/icons-material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useThemeContext } from "../../contexts/ThemeContext";
 
@@ -9,7 +12,7 @@ export const DrawerMenu = () => {
 
   const { themeName, toggleTheme } = useThemeContext();
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const handleDrawer = () => {
     open ? setOpen(false) : setOpen(true);
@@ -20,18 +23,17 @@ export const DrawerMenu = () => {
       width={open ? 300 : 40}
       padding={open ? 2 : 0}
       borderRadius={5}
-      // bgcolor={open ? theme.palette.background.default : theme.palette.background.paper}
-      sx={{ transition: "0.3s ease-in-out" }}
       boxShadow={open ? "0 4px 30px rgba(0, 0, 0, 0.1)" : "none"}
+      sx={{ transition: "0.3s ease-in-out" }}
     >
       <IconButton onClick={handleDrawer} color="primary">
         <Menu />
       </IconButton>
 
-      <Box display={open ? "flex" : "none"}>
+      <Box display={open ? "flex" : "none"} flexDirection="column" mt={1}>
+        <Typography sx={{ opacity: 0.7 }}>Theme</Typography>
         <Box
           bgcolor={theme.palette.background.default}
-          mt={2}
           width={130}
           height={30}
           borderRadius={3}
@@ -52,10 +54,10 @@ export const DrawerMenu = () => {
               transition: "0.2s ease-in-out",
             }}
           >
-            <Typography textTransform="capitalize">{themeName}</Typography>
+            <Typography textTransform="capitalize" fontSize="1.1rem">
+              {themeName}
+            </Typography>
           </Box>
-
-          
         </Box>
       </Box>
     </Box>
