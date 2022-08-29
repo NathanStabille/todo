@@ -1,7 +1,6 @@
 import { DonutLargeOutlined, MoreVert } from "@mui/icons-material";
 import {
   Box,
-  Button,
   Checkbox,
   IconButton,
   Menu,
@@ -10,7 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { MouseEvent, useEffect, useState } from "react";
-import { getItems } from "../../services/List";
+import { getItems, toggleCheckbox } from "../../services/List";
 
 export const ListItems = () => {
   const theme = useTheme();
@@ -34,6 +33,11 @@ export const ListItems = () => {
     getAllItems();
   }, []);
 
+  const updateCheckBox = async (item: any) => {
+    toggleCheckbox(item.done, item.id);
+    setList(await getItems());
+  };
+
   return (
     <Box
       flex={1}
@@ -42,21 +46,23 @@ export const ListItems = () => {
       justifyContent="flex-start"
       alignItems="center"
     >
-      {list.map((item: any) => {
+      {list.map((item: any, index: number) => {
         return (
           <Box
-            width="50%"
+            key={index}
+            width="70%"
             display="flex"
             justifyContent="space-between"
             alignItems="center"
             border={`1px solid ${theme.palette.secondary.main}`}
             padding={1}
             m={1}
-            borderRadius={10}
+            borderRadius={3}
           >
             <Box display="flex" justifyContent="center" alignItems="center">
               <Checkbox
                 checked={item.done}
+                onClick={() => updateCheckBox(item)}
                 size="small"
                 sx={{ color: theme.palette.text.primary, border: "none" }}
               />

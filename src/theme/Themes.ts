@@ -97,6 +97,7 @@ export const LightTheme = createTheme({
       styleOverrides: {
         root: {
           boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+          borderRadius: 10
         },
       },
     },

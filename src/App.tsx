@@ -1,5 +1,6 @@
 import { Box, useTheme } from "@mui/material";
 import { DrawerMenu } from "./components/DrawerMenu/DrawerMenu";
+import { InputItem } from "./components/InputItem/InputItem";
 import { ListItems } from "./components/ListItems/ListItems";
 export const App = () => {
   const theme = useTheme();
@@ -14,19 +15,21 @@ export const App = () => {
       bgcolor={theme.palette.background.default}
     >
       <Box
-        width="85%"
-        height="85%"
+        width="90%"
+        height="90%"
         borderRadius={10}
         padding={3}
         display="flex"
         justifyContent="center"
         boxShadow="0 4px 30px rgba(0, 0, 0, 0.1)"
-      bgcolor={theme.palette.background.paper}
-
-        
+        bgcolor={theme.palette.background.paper}
       >
         <DrawerMenu />
-        <ListItems />
+
+        <Box width="100%">
+          <InputItem />
+          <ListItems />
+        </Box>
       </Box>
     </Box>
   );

@@ -1,7 +1,5 @@
 import {
-  DarkModeOutlined,
   Menu,
-  NightsStayOutlined,
 } from "@mui/icons-material";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
@@ -20,7 +18,7 @@ export const DrawerMenu = () => {
 
   return (
     <Box
-      width={open ? 300 : 40}
+      width={open ? 320 : 40}
       padding={open ? 2 : 0}
       borderRadius={5}
       boxShadow={open ? "0 4px 30px rgba(0, 0, 0, 0.1)" : "none"}
@@ -50,11 +48,11 @@ export const DrawerMenu = () => {
             borderRadius={2}
             sx={{
               transform:
-                themeName === "light" ? "translateX(0%)" : "translateX(110%)",
+                themeName === "light" ? "translateX(0%)" : "translateX(120%)",
               transition: "0.2s ease-in-out",
             }}
           >
-            <Typography textTransform="capitalize" fontSize="1.1rem">
+            <Typography textTransform="capitalize">
               {themeName}
             </Typography>
           </Box>
