@@ -9,11 +9,11 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { useState } from "react";
 
 export const addCategory = async (categorie: string) => {
   await addDoc(collection(db, "categories"), {
     value: categorie,
-
   });
 };
 
@@ -28,7 +28,7 @@ export const getCategories = async () => {
   return newQueryList;
 };
 
-export const editItem = async (value: string, id: string) => {
+export const editCategory = async (value: string, id: string) => {
   const docRef = doc(db, "categories", id);
 
   await updateDoc(docRef, {
@@ -36,15 +36,7 @@ export const editItem = async (value: string, id: string) => {
   });
 };
 
-export const toggleCheckbox = async (done: boolean, id: string) => {
-  const docRef = doc(db, "categories", id);
-
-  await updateDoc(docRef, {
-    done: done ? false : true,
-  });
-};
-
-export const deleteItem = async (id: string) => {
+export const deleteCategory = async (id: string) => {
   await deleteDoc(doc(db, "categories", id));
 };
 

@@ -8,13 +8,29 @@ import {
   deleteDoc,
   query,
   where,
+  setDoc,
 } from "firebase/firestore";
+import { ListItemType } from "../types/allTypes";
 
-export const addItem = async (value: string, categorie: string) => {
-  await addDoc(collection(db, "list"), {
+export const addItem = async (value: string, category: string) => {
+  const queryList = await getDocs(collection(db, "list"));
+  const queryCategories = await getDocs(collection(db, "categories"));
+
+  const color = [] as string[];
+
+  queryCategories.forEach((item) => {
+    color.push(item.data().category === category ? item.data().color : "");
+  });
+
+  const id = queryList.empty
+    ? 1
+    : parseInt(queryList.docs.at(-1)?.id as string) + 1;
+
+  await setDoc(doc(db, "list", id.toString()), {
     value: value,
-    categorie: categorie,
+    category: category,
     done: false,
+    color: color.join(""),
   });
 };
 
@@ -26,7 +42,7 @@ export const getItems = async () => {
     newQueryList.push({ id: item.id, ...item.data() });
   });
 
-  return newQueryList;
+  return newQueryList as ListItemType[];
 };
 
 export const editItem = async (value: string, id: string) => {
@@ -48,4 +64,3 @@ export const toggleCheckbox = async (done: boolean, id: string) => {
 export const deleteItem = async (id: string) => {
   await deleteDoc(doc(db, "list", id));
 };
-

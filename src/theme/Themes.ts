@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material";
 
 export const DarkTheme = createTheme({
   typography: {
-    fontFamily: "Josefin Sans",
+    fontFamily: "Lexend",
   },
 
   palette: {
@@ -48,12 +48,22 @@ export const DarkTheme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        select: {
+          backgroundColor: "transparent",
+        },
+        icon: {
+          color: "#F1F5F7",
+        },
+      },
+    },
   },
 });
 
 export const LightTheme = createTheme({
   typography: {
-    fontFamily: "Josefin Sans",
+    fontFamily: "Lexend",
   },
 
   palette: {
@@ -98,6 +108,16 @@ export const LightTheme = createTheme({
         root: {
           boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
           borderRadius: 10,
+        },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        select: {
+          backgroundColor: "transparent",
+        },
+        icon: {
+          color: "#000748",
         },
       },
     },

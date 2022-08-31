@@ -2,22 +2,25 @@ import { KeyboardArrowDown } from "@mui/icons-material";
 import {
   Box,
   Input,
-  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
   useTheme,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useCategoriesContext } from "../../contexts/CategoriesContext";
+import { useListContext } from "../../contexts/ListContext";
 import { getCategories } from "../../services/Categories";
+import { addItem, getItems } from "../../services/List";
+import { CategoriesType } from "../../types/allTypes";
 
 export const InputItem = () => {
   const theme = useTheme();
 
-  const [categories, setCategories] = useState([] as any);
+  const { setList } = useListContext();
+  const { categories, setCategories } = useCategoriesContext();
   const [selectValue, setSelectValue] = useState("");
-
-  console.log(selectValue)
+  const [inputText, setInputText] = useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelectValue(event.target.value as string);
@@ -30,6 +33,14 @@ export const InputItem = () => {
 
     getAllCategories();
   }, []);
+
+  const addItemList = async () => {
+    if (inputText !== "") {
+      await addItem(inputText, selectValue);
+    }
+    setInputText("");
+    setList(await getItems());
+  };
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
@@ -44,29 +55,36 @@ export const InputItem = () => {
         paddingX={2}
       >
         <Input
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && addItemList()}
           disableUnderline
           placeholder="Write new task..."
           sx={{
-            fontSize: "1.5rem",
+            fontSize: "1.2rem",
             flex: 1,
+            paddingY: 1,
           }}
         />
         <Select
-          value={selectValue}
+          value={selectValue !== "" ? selectValue : "no list"}
           onChange={handleChange}
           variant="standard"
           disableUnderline
+          IconComponent={KeyboardArrowDown}
           sx={{
             ":hover": { background: "transparent" },
             textTransform: "capitalize",
             paddingX: 1,
             fontSize: "1.1rem",
           }}
-          IconComponent={KeyboardArrowDown}
+          inputProps={{ icon: { color: theme.palette.text.primary } }}
         >
-          {categories.map((item: any, index: number) => {
+          <MenuItem value={"no list"}>No list</MenuItem>
+          {categories.map((item: CategoriesType, index: number) => {
             return (
               <MenuItem
+                key={index}
                 value={item.category}
                 sx={{ textTransform: "capitalize", fontSize: "1.1rem" }}
               >

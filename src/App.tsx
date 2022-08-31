@@ -2,6 +2,7 @@ import { Box, useTheme } from "@mui/material";
 import { DrawerMenu } from "./components/DrawerMenu/DrawerMenu";
 import { InputItem } from "./components/InputItem/InputItem";
 import { ListItems } from "./components/ListItems/ListItems";
+
 export const App = () => {
   const theme = useTheme();
 
@@ -13,6 +14,7 @@ export const App = () => {
       justifyContent="center"
       alignItems="center"
       bgcolor={theme.palette.background.default}
+      sx={{ userSelect: "none" }}
     >
       <Box
         width="90%"
@@ -26,7 +28,7 @@ export const App = () => {
       >
         <DrawerMenu />
 
-        <Box width="100%">
+        <Box width="100%" overflow="auto">
           <InputItem />
           <ListItems />
         </Box>

@@ -1,6 +1,7 @@
 import { DonutLargeOutlined, MoreVert } from "@mui/icons-material";
 import {
   Box,
+  Button,
   Checkbox,
   IconButton,
   Menu,
@@ -9,15 +10,19 @@ import {
   useTheme,
 } from "@mui/material";
 import { MouseEvent, useEffect, useState } from "react";
+import { useListContext } from "../../contexts/ListContext";
 import { getItems, toggleCheckbox } from "../../services/List";
+import { ListItemType } from "../../types/allTypes";
 
 export const ListItems = () => {
   const theme = useTheme();
 
-  const [list, setList] = useState([] as any);
+  const { list, setList } = useListContext();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [openMenu, setOpenMenu] = useState(false);
 
   const open = Boolean(anchorEl);
+
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -25,16 +30,12 @@ export const ListItems = () => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    const getAllItems = async () => {
-      setList(await getItems());
-    };
+  const toggleOpenMenu = () => {
+    openMenu ? setOpenMenu(false) : setOpenMenu(true);
+  };
 
-    getAllItems();
-  }, []);
-
-  const updateCheckBox = async (item: any) => {
-    toggleCheckbox(item.done, item.id);
+  const updateCheckBox = async (done: boolean, id: string) => {
+    toggleCheckbox(done, id);
     setList(await getItems());
   };
 
@@ -46,7 +47,7 @@ export const ListItems = () => {
       justifyContent="flex-start"
       alignItems="center"
     >
-      {list.map((item: any, index: number) => {
+      {list?.map((item: ListItemType, index: number) => {
         return (
           <Box
             key={index}
@@ -62,20 +63,20 @@ export const ListItems = () => {
             <Box display="flex" justifyContent="center" alignItems="center">
               <Checkbox
                 checked={item.done}
-                onClick={() => updateCheckBox(item)}
+                onClick={() => updateCheckBox(item.done, item.id)}
                 size="small"
                 sx={{ color: theme.palette.text.primary, border: "none" }}
               />
               <Typography
-                fontSize="1.3rem"
+                fontSize="1.2rem"
                 textTransform="capitalize"
                 sx={{ textDecoration: item.done ? "line-through" : "none" }}
               >
-                {item.name}
+                {item.value}
               </Typography>
             </Box>
             <Box display="flex" alignItems="center">
-              <DonutLargeOutlined fontSize="small" />
+              <DonutLargeOutlined fontSize="small" sx={{ color: item.color }} />
               <IconButton
                 aria-controls={open ? "basic-menu" : undefined}
                 aria-expanded={open ? "true" : undefined}
@@ -84,13 +85,14 @@ export const ListItems = () => {
               >
                 <MoreVert />
               </IconButton>
+
               <Menu
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
                 variant="menu"
               >
-                <MenuItem onClick={handleClose}>Edit</MenuItem>
+                <MenuItem onClick={() => console.log(item.id)}>Edit</MenuItem>
                 <MenuItem onClick={handleClose}>Delete</MenuItem>
               </Menu>
             </Box>
