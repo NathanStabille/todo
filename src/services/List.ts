@@ -1,13 +1,10 @@
 import { db } from "../libs/firebase";
 import {
   collection,
-  addDoc,
   doc,
   updateDoc,
   getDocs,
   deleteDoc,
-  query,
-  where,
   setDoc,
 } from "firebase/firestore";
 import { ListItemType } from "../types/allTypes";

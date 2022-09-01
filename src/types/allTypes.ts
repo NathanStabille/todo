@@ -8,5 +8,5 @@ export type ListItemType = {
 
 export type CategoriesType = {
   category: string;
-  color: string;
+  color?: string;
 };

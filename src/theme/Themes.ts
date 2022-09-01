@@ -36,9 +36,6 @@ export const DarkTheme = createTheme({
         "::-webkit-scrollbar": {
           width: "0px",
         },
-        body: {
-          transition: "0.3s",
-        },
       },
     },
     MuiPaper: {
@@ -96,9 +93,6 @@ export const LightTheme = createTheme({
       styleOverrides: {
         "::-webkit-scrollbar": {
           width: "0px",
-        },
-        body: {
-          transition: "0.3s",
         },
       },
     },

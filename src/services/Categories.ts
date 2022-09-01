@@ -1,19 +1,18 @@
 import { db } from "../libs/firebase";
 import {
   collection,
-  addDoc,
   doc,
   updateDoc,
   getDocs,
   deleteDoc,
   query,
   where,
+  setDoc,
 } from "firebase/firestore";
-import { useState } from "react";
 
-export const addCategory = async (categorie: string) => {
-  await addDoc(collection(db, "categories"), {
-    value: categorie,
+export const addCategory = async (category: string) => {
+  await setDoc(doc(db, "categories", category), {
+    category: category,
   });
 };
 

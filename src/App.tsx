@@ -14,7 +14,7 @@ export const App = () => {
       justifyContent="center"
       alignItems="center"
       bgcolor={theme.palette.background.default}
-      sx={{ userSelect: "none" }}
+      sx={{ userSelect: "none", transition: "0.2s" }}
     >
       <Box
         width="90%"
