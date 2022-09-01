@@ -30,7 +30,7 @@ export const CreateNewCategory = () => {
   };
 
   return (
-    <Box>
+    <Box display="block">
       <MenuItem
         aria-disabled
         onClick={handleInput}
@@ -81,10 +81,11 @@ export const CreateNewCategory = () => {
       </Box>
       <Box
         sx={{
-          height: openInput ? 50 : 0,
+          height: openInput ? "100%" : 0,
           opacity: openInput ? 1 : 0,
           transition: "0.2s ease-in-out",
           visibility: openInput ? "visible" : "hidden",
+          mb: 3,
         }}
       >
         <CirclePicker

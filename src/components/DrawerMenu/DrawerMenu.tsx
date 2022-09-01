@@ -65,10 +65,9 @@ export const DrawerMenu = () => {
       </IconButton>
 
       <Box
-        height="100%"
+        height="90%"
         display={openDrawer ? "flex" : "none"}
         flexDirection="column"
-        mt={3}
         justifyContent="space-between"
       >
         <MenuList>

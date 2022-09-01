@@ -7,7 +7,7 @@ export const ThemeSwitcher = () => {
   const { themeName, toggleTheme } = useThemeContext();
 
   return (
-    <Box mb={8}>
+    <Box>
       <Typography sx={{ opacity: 0.7, transition: "0.1s" }}>Theme</Typography>
       <Box
         bgcolor={theme.palette.background.default}

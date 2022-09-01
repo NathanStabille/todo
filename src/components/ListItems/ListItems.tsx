@@ -1,18 +1,10 @@
-import { DonutLargeOutlined, MoreVert, SwitchLeft } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Checkbox,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import { MouseEvent, useEffect, useState } from "react";
+import { DonutLargeOutlined } from "@mui/icons-material";
+import { Box, Checkbox, Typography, useTheme } from "@mui/material";
 import { useListContext } from "../../contexts/ListContext";
 import { getItems, toggleCheckbox } from "../../services/List";
 import { ListItemType } from "../../types/allTypes";
+import { EditItemList } from "../EditItemList/EditItemList";
+import { useEffect, useState } from "react";
 
 export const ListItems = () => {
   const theme = useTheme();
@@ -25,28 +17,11 @@ export const ListItems = () => {
     switchList,
     toggleSwitchList,
   } = useListContext();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [openMenu, setOpenMenu] = useState(false);
-
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const toggleOpenMenu = () => {
-    openMenu ? setOpenMenu(false) : setOpenMenu(true);
-  };
 
   const updateCheckBox = async (done: boolean, id: string) => {
     toggleCheckbox(done, id);
     setList(await getItems());
   };
-
-  console.log(filteredList)
 
   return (
     <Box
@@ -86,24 +61,7 @@ export const ListItems = () => {
             </Box>
             <Box display="flex" alignItems="center">
               <DonutLargeOutlined fontSize="small" sx={{ color: item.color }} />
-              <IconButton
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-                color="primary"
-              >
-                <MoreVert />
-              </IconButton>
-
-              <Menu
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                variant="menu"
-              >
-                <MenuItem onClick={() => console.log(item.id)}>Edit</MenuItem>
-                <MenuItem onClick={handleClose}>Delete</MenuItem>
-              </Menu>
+              <EditItemList id={item.id} />
             </Box>
           </Box>
         );
