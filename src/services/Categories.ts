@@ -10,9 +10,10 @@ import {
   setDoc,
 } from "firebase/firestore";
 
-export const addCategory = async (category: string) => {
+export const addCategory = async (category: string, color: string) => {
   await setDoc(doc(db, "categories", category), {
     category: category,
+    color: color,
   });
 };
 

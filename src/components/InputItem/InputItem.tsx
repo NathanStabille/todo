@@ -1,6 +1,7 @@
-import { KeyboardArrowDown } from "@mui/icons-material";
+import { AddCircleOutline, KeyboardArrowDown } from "@mui/icons-material";
 import {
   Box,
+  IconButton,
   Input,
   MenuItem,
   Select,
@@ -37,9 +38,11 @@ export const InputItem = () => {
   const addItemList = async () => {
     if (inputText !== "") {
       await addItem(inputText, selectValue);
+      setInputText("");
+      setList(await getItems());
+    } else {
+      alert("field empty");
     }
-    setInputText("");
-    setList(await getItems());
   };
 
   return (
@@ -93,6 +96,15 @@ export const InputItem = () => {
             );
           })}
         </Select>
+
+        <IconButton
+          onClick={addItemList}
+          sx={{
+            color: theme.palette.text.primary,
+          }}
+        >
+          <AddCircleOutline />
+        </IconButton>
       </Box>
     </Box>
   );
