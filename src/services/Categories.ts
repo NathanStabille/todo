@@ -9,6 +9,7 @@ import {
   where,
   setDoc,
 } from "firebase/firestore";
+import { ListItemType } from "../types/allTypes";
 
 export const addCategory = async (category: string, color: string) => {
   await setDoc(doc(db, "categories", category), {
@@ -41,7 +42,16 @@ export const deleteCategory = async (id: string) => {
 };
 
 export const filterCategory = async (category: string) => {
-  const docRef = collection(db, "categories");
+  const docRef = collection(db, "list");
+  const newQueryList = [] as any;
 
   const q = query(docRef, where("category", "==", category));
+
+  const querySnapshot = await getDocs(q);
+
+  querySnapshot.forEach((item) => {
+    newQueryList.push({ id: item.id, ...item.data() });
+  });
+
+  return newQueryList as ListItemType[];
 };

@@ -1,4 +1,4 @@
-import { DonutLargeOutlined, MoreVert } from "@mui/icons-material";
+import { DonutLargeOutlined, MoreVert, SwitchLeft } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -17,7 +17,14 @@ import { ListItemType } from "../../types/allTypes";
 export const ListItems = () => {
   const theme = useTheme();
 
-  const { list, setList } = useListContext();
+  const {
+    list,
+    setList,
+    filteredList,
+    setFilteredList,
+    switchList,
+    toggleSwitchList,
+  } = useListContext();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -38,6 +45,8 @@ export const ListItems = () => {
     toggleCheckbox(done, id);
     setList(await getItems());
   };
+
+  console.log(filteredList)
 
   return (
     <Box

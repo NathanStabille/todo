@@ -20,10 +20,10 @@ export const addItem = async (value: string, category: string) => {
   });
 
   const id = queryList.empty
-    ? 1
-    : parseInt(queryList.docs.at(-1)?.id as string) + 1;
+    ? "1"
+    : (queryList.docs.at(-1)?.id as string) + "1";
 
-  await setDoc(doc(db, "list", id.toString()), {
+  await setDoc(doc(db, "list", id), {
     value: value,
     category: category,
     done: false,

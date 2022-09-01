@@ -2,7 +2,6 @@ import {
   Add,
   AddCircleOutline,
   Close,
-  CropLandscapeOutlined,
   DataUsageOutlined,
   DeleteOutline,
   HomeOutlined,
@@ -15,52 +14,42 @@ import {
   Input,
   MenuItem,
   MenuList,
+  Modal,
   Typography,
   useTheme,
 } from "@mui/material";
 import { useState } from "react";
-import { CirclePicker } from "react-color";
 import { useCategoriesContext } from "../../contexts/CategoriesContext";
 import { useListContext } from "../../contexts/ListContext";
-import { useThemeContext } from "../../contexts/ThemeContext";
-import {
-  addCategory,
-  deleteCategory,
-  getCategories,
-} from "../../services/Categories";
+import { filterCategory, getCategories } from "../../services/Categories";
+import { CreateNewCategory } from "../CreateNewCategory/CreateNewCategory";
+import { DeleteModal } from "../DeleteModal/DeleteModal";
+import { ThemeSwitcher } from "../ThemeSwitcher/ThemeSwitcher";
 
 export const DrawerMenu = () => {
   const theme = useTheme();
 
-  const { themeName, toggleTheme } = useThemeContext();
   const { categories, setCategories } = useCategoriesContext();
-  const { list } = useListContext();
-  const [inputText, setInputText] = useState("");
-  const [colorPicker, setColorPicker] = useState("");
+  const { list, setFilteredList } = useListContext();
 
   const [openDrawer, setOpenDrawer] = useState(true);
-  const [openInput, setOpenInput] = useState(false);
 
   const handleDrawer = () => {
     openDrawer ? setOpenDrawer(false) : setOpenDrawer(true);
   };
-  const handleInput = () => {
-    openInput ? setOpenInput(false) : setOpenInput(true);
+
+  const filterCategoryList = async (category: string) => {
+    setFilteredList(await filterCategory(category));
   };
-  const createCategoryList = async () => {
-    if (inputText !== "" && colorPicker !== "") {
-      await addCategory(inputText, colorPicker);
-      setCategories(await getCategories());
-      setInputText("");
-      setColorPicker("");
-      setOpenInput(false);
-    } else {
-      alert("enter a name for the list and/or select a color");
-    }
-  };
-  const deleteCategoryList = async (id: string) => {
-    await deleteCategory(id);
-    setCategories(await getCategories());
+
+  const countItemsByCategory = (category: string) => {
+    let count = 0;
+    list.map((item) => {
+      if (item.category === category) {
+        count++;
+      }
+    });
+    return count;
   };
   return (
     <Box
@@ -107,6 +96,7 @@ export const DrawerMenu = () => {
               {list.length}
             </Typography>
           </MenuItem>
+          {/* category list map */}
           {categories.map((item, index) => {
             return (
               <Box
@@ -125,17 +115,20 @@ export const DrawerMenu = () => {
               >
                 <MenuItem
                   disableRipple
-                  onClick={() => console.log("menuItem")}
+                  onClick={() => filterCategoryList(item.category)}
                   aria-disabled
                   key={index}
                   sx={{
                     textTransform: "capitalize",
                     borderRadius: 3,
                     paddingY: 1,
+                    paddingRight: 0,
                     flex: 1,
                     ":hover": {
                       background: "transparent",
                     },
+                    display: "flex",
+                    justifyContent: "space-between",
                   }}
                 >
                   <Box display="flex" alignItems="center">
@@ -146,119 +139,25 @@ export const DrawerMenu = () => {
                     <Typography fontSize="1.1rem">{item.category}</Typography>
                   </Box>
 
-                  <Typography></Typography>
+                  <Typography
+                    bgcolor={theme.palette.background.default}
+                    paddingX={1}
+                    borderRadius={2}
+                    fontSize="0.9rem"
+                  >
+                    {countItemsByCategory(item.category)}
+                  </Typography>
                 </MenuItem>
-                <IconButton
-                  onClick={() => deleteCategoryList(item.category)}
-                  disableRipple
-                  sx={{
-                    color: "#eb34345c",
-                    ":hover": {
-                      color: "#ff0000fc",
-                    },
-                  }}
-                >
-                  <DeleteOutline />
-                </IconButton>
+
+                <DeleteModal id={item.category} />
               </Box>
             );
           })}
-          <Box>
-            <MenuItem
-              aria-disabled
-              onClick={handleInput}
-              sx={{
-                borderRadius: 3,
-                paddingY: 1,
-                fontSize: "1.1rem",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Add sx={{ mr: 2 }} /> Create new list
-            </MenuItem>
-
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <Input
-                fullWidth
-                placeholder="Write new list..."
-                disableUnderline
-                value={inputText}
-                onKeyDown={(e) => e.key === "Enter" && createCategoryList()}
-                onChange={(e) => setInputText(e.target.value)}
-                sx={{
-                  height: openInput ? 50 : 0,
-                  opacity: openInput ? 1 : 0,
-                  visibility: openInput ? "visible" : "hidden",
-                  padding: 1,
-                  mt: 2,
-                  mb: 3,
-                  fontSize: "1.1rem",
-                  border: `1px solid ${theme.palette.background.default}`,
-                  borderRadius: 3,
-                  transition: "0.2s ease-in-out",
-                }}
-              />
-              <IconButton
-                onClick={createCategoryList}
-                sx={{
-                  color: theme.palette.text.primary,
-                  height: openInput ? 50 : 0,
-                  opacity: openInput ? 1 : 0,
-                  transition: "0.2s ease-in-out",
-                  visibility: openInput ? "visible" : "hidden",
-                }}
-              >
-                <AddCircleOutline fontSize="large" />
-              </IconButton>
-            </Box>
-            <Box
-              sx={{
-                height: openInput ? 50 : 0,
-                opacity: openInput ? 1 : 0,
-                transition: "0.2s ease-in-out",
-                visibility: openInput ? "visible" : "hidden",
-              }}
-            >
-              <CirclePicker
-                color={colorPicker}
-                onChangeComplete={(e) => setColorPicker(e.hex)}
-              />
-            </Box>
-          </Box>
+          {/* end category list map */}
+          <CreateNewCategory />
         </MenuList>
 
-        <Box mb={8}>
-          <Typography sx={{ opacity: 0.7, transition: "0.1s" }}>
-            Theme
-          </Typography>
-          <Box
-            bgcolor={theme.palette.background.default}
-            width={130}
-            height={30}
-            borderRadius={3}
-            display="flex"
-            alignItems="center"
-            paddingY={2}
-            paddingX={1}
-            onClick={toggleTheme}
-            sx={{ cursor: "pointer" }}
-          >
-            <Box
-              bgcolor={theme.palette.background.paper}
-              paddingX={1}
-              borderRadius={2}
-              boxShadow={"1px 1px 5px #FFF"}
-              sx={{
-                transform:
-                  themeName === "light" ? "translateX(0%)" : "translateX(110%)",
-                transition: "0.2s",
-              }}
-            >
-              <Typography textTransform="capitalize">{themeName}</Typography>
-            </Box>
-          </Box>
-        </Box>
+        <ThemeSwitcher />
       </Box>
     </Box>
   );
