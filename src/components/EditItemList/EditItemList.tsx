@@ -16,6 +16,8 @@ import {
   Zoom,
 } from "@mui/material";
 import { MouseEvent, useState } from "react";
+import { useListContext } from "../../contexts/ListContext";
+import { editItem, getItems } from "../../services/List";
 
 interface IEditItemListProps {
   id: string;
@@ -24,9 +26,11 @@ interface IEditItemListProps {
 export const EditItemList = ({ id }: IEditItemListProps) => {
   const theme = useTheme();
 
+  const { setList } = useListContext();
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [openMenu, setOpenMenu] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [inputText, setInputText] = useState("");
 
   const open = Boolean(anchorEl);
 
@@ -41,25 +45,28 @@ export const EditItemList = ({ id }: IEditItemListProps) => {
     setAnchorEl(null);
   };
 
-  const editItemList = () => {};
+  const editItemList = async (id: string) => {
+    if (inputText !== "") {
+      editItem(inputText, id);
+      setOpenModal(false);
+      setList(await getItems());
+      setInputText("");
+    }
+  };
 
   return (
     <Box>
       <IconButton
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-expanded={open ? "true" : undefined}
+        disableFocusRipple
+        aria-disabled
+        disableTouchRipple
         onClick={handleClick}
         color="primary"
       >
-        <MoreVert />
+        <MoreVert aria-disabled />
       </IconButton>
 
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        variant="menu"
-      >
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem onClick={handleModal}>Edit</MenuItem>
         <MenuItem onClick={handleClose}>Delete</MenuItem>
       </Menu>
@@ -72,8 +79,12 @@ export const EditItemList = ({ id }: IEditItemListProps) => {
           justifyContent="center"
         >
           <Input
+            autoFocus
             placeholder="Write new value..."
             disableUnderline
+            value={inputText}
+            onKeyDown={(e) => e.key === "Enter" && editItemList(id)}
+            onChange={(e) => setInputText(e.target.value)}
             sx={{
               fontSize: "1.1rem",
               width: "50%",
@@ -86,7 +97,7 @@ export const EditItemList = ({ id }: IEditItemListProps) => {
             }}
           />
           <Tooltip title="Add" TransitionComponent={Zoom}>
-            <IconButton>
+            <IconButton onClick={() => editItemList(id)}>
               <AddCircleOutline
                 sx={{
                   color: theme.palette.secondary.main,

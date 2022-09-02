@@ -53,7 +53,6 @@ export const ListItems = () => {
               />
               <Typography
                 fontSize="1.2rem"
-                textTransform="capitalize"
                 sx={{ textDecoration: item.done ? "line-through" : "none" }}
               >
                 {item.value}
