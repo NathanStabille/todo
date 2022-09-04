@@ -1,27 +1,23 @@
 import {
-  Add,
-  AddCircleOutline,
   Close,
   DataUsageOutlined,
-  DeleteOutline,
   HomeOutlined,
   Menu,
 } from "@mui/icons-material";
 import {
   Box,
-  Button,
   IconButton,
-  Input,
   MenuItem,
   MenuList,
-  Modal,
   Typography,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { useState } from "react";
 import { useCategoriesContext } from "../../contexts/CategoriesContext";
 import { useListContext } from "../../contexts/ListContext";
-import { filterCategory, getCategories } from "../../services/Categories";
+import { filterCategory } from "../../services/Categories";
+import { getItems } from "../../services/List";
 import { CreateNewCategory } from "../CreateNewCategory/CreateNewCategory";
 import { DeleteModal } from "../DeleteModal/DeleteModal";
 import { ThemeSwitcher } from "../ThemeSwitcher/ThemeSwitcher";
@@ -29,10 +25,12 @@ import { ThemeSwitcher } from "../ThemeSwitcher/ThemeSwitcher";
 export const DrawerMenu = () => {
   const theme = useTheme();
 
-  const { categories, setCategories } = useCategoriesContext();
-  const { list, setFilteredList } = useListContext();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const [openDrawer, setOpenDrawer] = useState(true);
+  const { categories } = useCategoriesContext();
+  const { list, setList, setFilteredList, setSwitchList } = useListContext();
+
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const handleDrawer = () => {
     openDrawer ? setOpenDrawer(false) : setOpenDrawer(true);
@@ -40,6 +38,7 @@ export const DrawerMenu = () => {
 
   const filterCategoryList = async (category: string) => {
     setFilteredList(await filterCategory(category));
+    setSwitchList(false);
   };
 
   const countItemsByCategory = (category: string) => {
@@ -50,6 +49,11 @@ export const DrawerMenu = () => {
       }
     });
     return count;
+  };
+
+  const updateMainList = async () => {
+    setSwitchList(true);
+    setList(await getItems());
   };
   return (
     <Box
@@ -72,6 +76,7 @@ export const DrawerMenu = () => {
       >
         <MenuList>
           <MenuItem
+            onClick={updateMainList}
             aria-disabled
             sx={{
               width: "100%",

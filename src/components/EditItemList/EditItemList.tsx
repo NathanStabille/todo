@@ -1,7 +1,6 @@
 import {
   AddCircleOutline,
   CancelOutlined,
-  Clear,
   MoreVert,
 } from "@mui/icons-material";
 import {
@@ -17,7 +16,7 @@ import {
 } from "@mui/material";
 import { MouseEvent, useState } from "react";
 import { useListContext } from "../../contexts/ListContext";
-import { editItem, getItems } from "../../services/List";
+import { deleteItem, editItem, getItems } from "../../services/List";
 
 interface IEditItemListProps {
   id: string;
@@ -49,9 +48,16 @@ export const EditItemList = ({ id }: IEditItemListProps) => {
     if (inputText !== "") {
       editItem(inputText, id);
       setOpenModal(false);
-      setList(await getItems());
       setInputText("");
+      setAnchorEl(null);
+      setList(await getItems());
     }
+  };
+
+  const deleteItemList = async (id: string) => {
+    setAnchorEl(null);
+    deleteItem(id);
+    setList(await getItems());
   };
 
   return (
@@ -68,7 +74,7 @@ export const EditItemList = ({ id }: IEditItemListProps) => {
 
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         <MenuItem onClick={handleModal}>Edit</MenuItem>
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={() => deleteItemList(id)}>Delete</MenuItem>
       </Menu>
 
       <Modal hideBackdrop open={openModal} sx={{ backdropFilter: "blur(5px)" }}>
@@ -83,7 +89,6 @@ export const EditItemList = ({ id }: IEditItemListProps) => {
             placeholder="Write new value..."
             disableUnderline
             value={inputText}
-            onKeyDown={(e) => e.key === "Enter" && editItemList(id)}
             onChange={(e) => setInputText(e.target.value)}
             sx={{
               fontSize: "1.1rem",

@@ -6,6 +6,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -17,6 +18,7 @@ import { CategoriesType } from "../../types/allTypes";
 
 export const InputItem = () => {
   const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { setList } = useListContext();
   const { categories, setCategories } = useCategoriesContext();
@@ -39,6 +41,7 @@ export const InputItem = () => {
     if (inputText !== "") {
       await addItem(inputText, selectValue);
       setInputText("");
+      setSelectValue("");
       setList(await getItems());
     } else {
       alert("field empty");
@@ -48,7 +51,7 @@ export const InputItem = () => {
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
       <Box
-        width="70%"
+        width={smDown? '95%':"70%"}
         bgcolor={theme.palette.background.default}
         borderRadius={3}
         mb={3}

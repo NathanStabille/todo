@@ -14,7 +14,7 @@ interface IListContext {
   filteredList: ListItemType[];
   setFilteredList: (filteredList: ListItemType[]) => void;
   switchList: boolean;
-  toggleSwitchList: () => void;
+  setSwitchList: (switchList: boolean) => void;
 }
 
 interface IListProviderProps {
@@ -30,7 +30,7 @@ export const useListContext = () => {
 export const ListProvider: React.FC<IListProviderProps> = ({ children }) => {
   const [list, setList] = useState([] as ListItemType[]);
   const [filteredList, setFilteredList] = useState([] as ListItemType[]);
-  const [switchList, setSwitchList] = useState(false);
+  const [switchList, setSwitchList] = useState(true);
 
   useEffect(() => {
     const getAllItems = async () => {
@@ -40,10 +40,6 @@ export const ListProvider: React.FC<IListProviderProps> = ({ children }) => {
     getAllItems();
   }, []);
 
-  const toggleSwitchList = () => {
-    switchList ? setSwitchList(false) : setSwitchList(true);
-  };
-
   return (
     <ListContext.Provider
       value={{
@@ -52,7 +48,7 @@ export const ListProvider: React.FC<IListProviderProps> = ({ children }) => {
         filteredList,
         setFilteredList,
         switchList,
-        toggleSwitchList,
+        setSwitchList,
       }}
     >
       {children}
