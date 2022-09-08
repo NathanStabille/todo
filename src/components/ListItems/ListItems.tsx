@@ -8,12 +8,7 @@ import { EditItemList } from "../EditItemList/EditItemList";
 export const ListItems = () => {
   const theme = useTheme();
 
-  const {
-    list,
-    setList,
-    filteredList,
-    switchList,
-  } = useListContext();
+  const { list, setList, filteredList, switchList } = useListContext();
 
   const updateCheckBox = async (done: boolean, id: string) => {
     toggleCheckbox(done, id);

@@ -1,11 +1,28 @@
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { DrawerMenu } from "./components/DrawerMenu/DrawerMenu";
 import { InputItem } from "./components/InputItem/InputItem";
 import { ListItems } from "./components/ListItems/ListItems";
+import { DateTime } from "luxon";
 
 export const App = () => {
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const welcomeDate = () => {
+    let dateTime = DateTime.now().toFormat("T");
+
+    const dateHour = () => {
+      if (dateTime >= "12:00" && dateTime < "18:00") {
+        return "Good Afternoon";
+      } else if (dateTime >= "18:00" && dateTime < "00:00") {
+        return "Good Evening";
+      } else if (dateTime > "00:00") {
+        return "Good Morning";
+      }
+    };
+
+    return dateHour();
+  };
 
   return (
     <Box
@@ -29,8 +46,22 @@ export const App = () => {
         bgcolor={theme.palette.background.paper}
       >
         <DrawerMenu />
-
         <Box width="100%" overflow="auto">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            mb={5}
+          >
+            <Box width={smDown ? "95%" : "70%"}>
+              <Typography fontSize="2rem" fontWeight="500">
+                {`${welcomeDate()}`}
+              </Typography>
+              <Typography fontSize="1.2rem" sx={{ opacity: 0.5 }}>
+                {`It's ${DateTime.now().toFormat("cccc, LLL dd")}`}
+              </Typography>
+            </Box>
+          </Box>
           <InputItem />
           <ListItems />
         </Box>

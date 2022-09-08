@@ -10,7 +10,6 @@ import {
   MenuItem,
   MenuList,
   Typography,
-  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { useState } from "react";
@@ -25,7 +24,6 @@ import { ThemeSwitcher } from "../ThemeSwitcher/ThemeSwitcher";
 export const DrawerMenu = () => {
   const theme = useTheme();
 
-  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { categories } = useCategoriesContext();
   const { list, setList, setFilteredList, setSwitchList } = useListContext();
@@ -60,6 +58,7 @@ export const DrawerMenu = () => {
       width={openDrawer ? 400 : 40}
       padding={openDrawer ? 2 : 0}
       borderRadius={5}
+      zIndex={1}
       boxShadow={openDrawer ? "0 4px 30px rgba(0, 0, 0, 0.1)" : "none"}
       overflow="auto"
       sx={{ transition: "0.3s ease-in-out" }}
