@@ -19,7 +19,7 @@ Site: https://task-list-with-firebase.netlify.app/
 
 <br>
 <div style= "display: flex">
-<img style="border: solid 1px; margin: 3px;" src="./public/github/todo-list.png">
+<img style="border: solid 1px; margin: 3px;" src="./public/github/screenshot.png">
 </div>
 <br>
 <br>
