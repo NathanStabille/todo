@@ -4,7 +4,7 @@
 
 Todo list developed with ReactJS and Firebase.
 
-Site: https://task-list-with-firebase.netlify.app/
+Site: [todo.empthy.dev/](https://todo.empthy.dev/)
 <br>
 <br>
 
