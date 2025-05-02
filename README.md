@@ -2,7 +2,7 @@
 
 ## About
 
-Todo list developed with ReactJS and Firebase.
+Task manager built with ReactJS and Firebase, including editable categories and persistent cloud storage.
 
 Site: [todo.empthy.dev/](https://todo.empthy.dev/)
 <br>
